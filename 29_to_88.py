@@ -53,9 +53,9 @@ def getOffsets(filename) :
 	for line in lines :
 		m = offset_pattern.match(line)
 		if m:
-			datum = m.group(1)
-			bPart = m.group(2)
-			offset = float(m.group(3)
+			datum = m.group(1).strip()
+			bPart = m.group(2).strip()
+			offset = float(m.group(3).strip())
 			offsets.setdefault(bPart.upper(), {})[datum] = offset
 	output()
 	output("Offsets from %s:" % filename)
@@ -162,4 +162,5 @@ msg = "Shifted %d values in %d records - %d location(s) skipped" % (valueCount, 
 output()
 output(msg)
 MessageBox.showInformation(msg, progname)
+
 
