@@ -1,5 +1,6 @@
 """
 Modified 09-Apr-2025 to use case-insensitive matching on B and C pathname parts
+Modified 19-Sep-2025 to use allow more complex B pathname parts
 
 Mike Perryman
 CEIWR-HEC
@@ -7,8 +8,9 @@ CEIWR-HEC
 from com.rma.client import Browser
 from hec.heclib.dss import HecDss
 from hec.script     import Constants, MessageBox
-import os, string, time, traceback
+import os, string, re, time, traceback
 progname = None
+offset_pattern = re.compile(r"^\s*#(29|LOCAL)-88#(.+?)((?:,|\s)*[+-]\d*\.?\d*)\s*$")
 def output(msg="") :
 	'''
 	Output to console log
@@ -43,25 +45,18 @@ def getOffsets(filename) :
 	'''
 	Reads the offsets from the "verticalDatumOffsets.txt" file in the base shared directory
 	'''
-	def parseLine(line) : 
-		return map(string.strip, line.split("#")[2].strip().split(","))
-		
 	if not os.path.isfile(filename) : 
 		error("No such file: %s" % filename)
 		
 	with open(filename, "r") as f : lines = f.read().strip().split("\n")
 	offsets = {}
-	transtable = string.maketrans("#,", "  ")
 	for line in lines :
-		line = line.strip().upper()
-		if line.startswith("#29-88#") :
-			bPart, offset = parseLine(line)
-			offset = float(offset)
-			offsets.setdefault(bPart.upper(), {})["29"] = offset
-		elif line.startswith("LOCAL-88") :
-			bPart, offset = parseLine(line)
-			offset = float(offset)
-			offsets.setdefault(bPart.upper(), {})["LOCAL"] = offset
+		m = offset_pattern.match(line)
+		if m:
+			datum = m.group(1)
+			bPart = m.group(2)
+			offset = float(m.group(3)
+			offsets.setdefault(bPart.upper(), {})[datum] = offset
 	output()
 	output("Offsets from %s:" % filename)
 	for bPart in sorted(offsets.keys()) :
@@ -167,3 +162,4 @@ msg = "Shifted %d values in %d records - %d location(s) skipped" % (valueCount, 
 output()
 output(msg)
 MessageBox.showInformation(msg, progname)
+
