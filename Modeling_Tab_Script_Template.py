@@ -34,6 +34,14 @@ def chkfcst(fcst) :
 		msg = "A forecast must be open"
 		output("ERROR : %s" % msg)
 		raise Exception(msg)
+
+## Uncomment this section to add this script to a progranm order 
+'''
+def computeAlternative(currentAlternative, computeOptions):
+
+	return True # success
+'''
+
 try :
 	try :
 ################## Stection-Start ####################################################################
