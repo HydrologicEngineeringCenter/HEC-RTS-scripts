@@ -1,0 +1,6 @@
+{
+  "python.analysis.extraPaths": [
+    "c:\\Users\\q0hecrje\\.vscode\\extensions\\hydrologicengineeringcenter.hec-jython-0.0.2\\stubs",
+    "c:\\Users\\q0hecrje\\.vscode\\extensions\\hydrologicengineeringcenter.hec-jython-0.0.2\\jython_files"
+  ]
+}

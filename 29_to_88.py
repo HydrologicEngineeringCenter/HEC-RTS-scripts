@@ -70,8 +70,6 @@ def applyOffsets(dssfile, offsets) :
 	'''
 	valueCount = recordCount = skipped = 0
 	dss = HecDss.open(dssfile)
-	dm = dss.getDataManager()
-	dm.createNewCatalog (1)
 	try :
 		records = {}
 		for pn in sorted([p for p in dss.getPathnameList() if p.split("/")[3].upper().startswith("ELEV")]) :
